@@ -1,7 +1,7 @@
-name: Build and Test
+name: Build and Test Unity Project
 
 on:
-  workflow_dispatch: # Allows manual triggering
+  workflow_dispatch: # Permet de déclencher manuellement
 
 jobs:
   build:
@@ -11,16 +11,19 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up .NET Core
-      uses: actions/setup-dotnet@v1
+    - name: Set up Unity
+      uses: game-ci/unity-builder@v2
       with:
-        dotnet-version: '6.0.x' # Specify the .NET version used in the project
+        unityVersion: 2021.3.0f1 # Utiliser la version Unity correspondant à votre projet
 
-    - name: Restore dependencies
-      run: dotnet restore PortraitGenerator/PortraitGenerator.csproj
+    - name: Build project
+      uses: game-ci/unity-builder@v2
+      with:
+        projectPath: .
+        buildTarget: StandaloneWindows64 # Modifier selon votre plateforme cible
 
-    - name: Build the project
-      run: dotnet build PortraitGenerator/PortraitGenerator.csproj --configuration Release --no-restore
-
-    - name: Run tests
-      run: dotnet test PortraitGenerator/PortraitGenerator.csproj --no-restore --verbosity normal
+    - name: Upload Build
+      uses: actions/upload-artifact@v2
+      with:
+        name: Build
+        path: build
