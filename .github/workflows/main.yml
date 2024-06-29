@@ -17,10 +17,10 @@ jobs:
         dotnet-version: '6.0.x' # Specify the .NET version used in the project
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore PortraitGenerator/PortraitGenerator.csproj
 
     - name: Build the project
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build PortraitGenerator/PortraitGenerator.csproj --configuration Release --no-restore
 
     - name: Run tests
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test PortraitGenerator/PortraitGenerator.csproj --no-restore --verbosity normal
